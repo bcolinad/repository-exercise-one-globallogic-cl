@@ -82,6 +82,7 @@ Desirable
   - Rename field contrycode to country_code , for typing error.
   - Rename field citycode to city_code , for typing error.
   - Collection, Enviroment for Postman with all api rest and persistent token in directory repository-exercise-one-globallogic-cl\src\main\resources\postman.
+  - Banner Console.
 
 ### Before starting
 
