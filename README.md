@@ -87,7 +87,7 @@ Desirable
 
 Considerate use this versión.
 
-| Software | Version |
+| Dependency | Version |
 | ------ | ------ |
 | IntelliJ IDEA | 1.8.0_152 |
 | Gradle | 4.10.3|
