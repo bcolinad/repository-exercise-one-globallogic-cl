@@ -2,14 +2,14 @@
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
-Requested Requirements.
+## Requested Requirements.
 
 Desarrolle una aplicación que exponga una API RESTful de creación de usuarios.
 Todos los endpoints deben aceptar y retornar solamente JSON, inclusive al para los mensajes de error.
 Todos los mensajes deben seguir el formato:
 {"mensaje": "mensaje de error"}
 
-Registro
+## Registro
 
 - Ese endpoint deberá recibir un usuario con los campos "nombre", "correo", "contraseña", más
 un listado de objetos "teléfono", respetando el siguiente formato:
@@ -47,7 +47,7 @@ Mayuscula, letras minúsculas, y dos números)
 - El token deberá ser persistido junto con el usuario
 
 
-Mandatory:
+## Mandatory:
 
 - Banco de datos en memoria.
 - Gradle como herramienta de construcción.
@@ -60,7 +60,7 @@ Mandatory:
 (ambos diagramas son de carácter obligatorio y deben seguir estándares UML).
 - README.md debe contener las instrucciones para levantar y usar el proyecto.
 
-Desirable
+## Desirable
 - JWT cómo token
 
 # What does the repository contain?
