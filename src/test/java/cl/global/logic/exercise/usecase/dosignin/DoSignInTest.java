@@ -6,10 +6,8 @@ import cl.global.logic.exercise.data.GlobalLogicRepository;
 import cl.global.logic.exercise.data.dtos.User;
 import cl.global.logic.exercise.usecases.dosignin.DoSignInUseCase;
 import cl.global.logic.exercise.usecases.dosignin.models.DoSignInResponse;
-import cl.global.logic.exercise.usecases.dosignup.DoSignUpUseCase;
 import cl.global.logic.exercise.usecases.finduserbyemail.FindUserByEmailUseCase;
 import cl.global.logic.exercise.usecases.getusers.GetUsersUseCase;
-import cl.global.logic.exercise.utilities.exceptions.CustomExceptionsHandler;
 import cl.global.logic.exercise.utilities.exceptions.ExceptionHandlerResponse;
 import cl.global.logic.exercise.utilities.jwt.JwtTokenProvider;
 import org.junit.Before;
@@ -25,12 +23,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 
+import static cl.global.logic.exercise.usecase.UserStubs.getUser;
 import static cl.global.logic.exercise.usecase.dosignin.DoSignInStubs.getDoSignInRequest;
 import static cl.global.logic.exercise.usecase.dosignin.DoSignInStubs.getDoSignInResponse;
-import static cl.global.logic.exercise.usecase.dosignup.DoSignUpStubs.getDoSignUpRequest;
-import static cl.global.logic.exercise.usecase.dosignup.DoSignUpStubs.getDoSignUpResponse;
-import static cl.global.logic.exercise.usecase.getusers.GetUsersStubs.getGetUsersResponse;
-import static cl.global.logic.exercise.utilities.formats.Date.dateNow;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,7 +34,6 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class DoSignInTest {
 
-  @Mock private DoSignUpUseCase doSignUpUseCase;
   @Mock private GetUsersUseCase getUsersUseCase;
   @Mock private FindUserByEmailUseCase findUserByEmailUseCase;
   @Mock private GlobalLogicRepository globalLogicRepository;
@@ -61,19 +55,25 @@ public class DoSignInTest {
             authenticationManager, jwtTokenProvider, globalLogicRepository, passwordEncoder());
 
     final GlobalLogicServiceFacade globalLogicServiceFacade =
-        new GlobalLogicServiceFacade(
-            doSignUpUseCase, doSignInUseCase, getUsersUseCase, findUserByEmailUseCase);
+        new GlobalLogicServiceFacade(doSignInUseCase, getUsersUseCase, findUserByEmailUseCase);
 
     globalLogicController = new GlobalLogicController(globalLogicServiceFacade);
 
-    when(globalLogicRepository.findByEmail(any(String.class)))
-        .thenReturn(
-            new User(
-                getDoSignUpRequest().getName(),
-                getDoSignUpRequest().getEmail(),
-                getDoSignUpRequest().getPassword(),
-                getDoSignUpRequest().getPhones(),
-                getDoSignUpResponse().getCreated()));
+    final User user =
+        new User(
+            getUser().getId(),
+            getUser().getName(),
+            getUser().getEmail(),
+            getUser().getPassword(),
+            getUser().getPhones(),
+            getUser().getCreated(),
+            getUser().getModified(),
+            getUser().getLastLogin(),
+            getUser().getToken(),
+            getUser().getRoles(),
+            getUser().isActive());
+    when(globalLogicRepository.save(any(User.class))).thenReturn(user);
+    when(globalLogicRepository.findByEmail(any(String.class))).thenReturn(user);
     when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
         .thenReturn(
             new UsernamePasswordAuthenticationToken(
@@ -93,7 +93,14 @@ public class DoSignInTest {
     assertNotNull(getDoSignInResponse());
     assertNotNull(doSignInResponse);
     assertEquals(
-        doSignInResponse, new DoSignInResponse(getDoSignInResponse().getToken(), dateNow()));
+        doSignInResponse,
+        new DoSignInResponse(
+            getDoSignInResponse().getId(),
+            getDoSignInResponse().getCreated(),
+            getDoSignInResponse().getModified(),
+            getDoSignInResponse().getLastLogin(),
+            getDoSignInResponse().getToken(),
+            getDoSignInResponse().isActive()));
   }
 
   @Test

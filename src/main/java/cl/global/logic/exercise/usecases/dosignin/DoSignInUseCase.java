@@ -4,6 +4,7 @@ import cl.global.logic.exercise.data.GlobalLogicRepository;
 import cl.global.logic.exercise.data.dtos.User;
 import cl.global.logic.exercise.usecases.dosignin.models.DoSignInRequest;
 import cl.global.logic.exercise.usecases.dosignin.models.DoSignInResponse;
+import cl.global.logic.exercise.usecases.dosignin.models.Phone;
 import cl.global.logic.exercise.utilities.jwt.JwtTokenProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,9 +14,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Objects;
 
-import static cl.global.logic.exercise.utilities.AppConstant.USER_DOES_NOT_EXIST_EXCEPTION_MESSAGE;
+import java.util.ArrayList;
+import java.util.List;
+
+import static cl.global.logic.exercise.utilities.AppConstant.ROL_ADMIN;
+import static cl.global.logic.exercise.utilities.AppConstant.ROL_USER;
 import static cl.global.logic.exercise.utilities.formats.Date.dateNow;
 
 @Service
@@ -43,42 +47,78 @@ public class DoSignInUseCase {
   }
 
   public DoSignInResponse doSignIn(final DoSignInRequest doSignInRequest) {
-    // Do log class
-    logsDoSignUpUseCase.info(
-        "Here I Am: Class:DoSignInUseCase, Method: doSignIn, Message: {}",
+    // EncryptPassword
+    final DoSignInRequest encryptDoSignInRequest =
         new DoSignInRequest(
-            doSignInRequest.getEmail(), passwordEncoder.encode(doSignInRequest.getPassword())));
+            doSignInRequest.getName(),
+            doSignInRequest.getEmail(),
+            passwordEncoder.encode(doSignInRequest.getPassword()),
+            doSignInRequest.getPhones());
+    // Do Log Class
+    logsDoSignUpUseCase.info(
+        "Here I Am: Class:DoSignInUseCase, Method: doSignIn, Message: {}", encryptDoSignInRequest);
     // Do find email user
-    final User findEmail = globalLogicRepository.findByEmail(doSignInRequest.getEmail());
-    // Do log find email user
-    logsDoSignUpUseCase.info("Here I Am: Class:DoSignInUseCase, Method: doSignIn, Action: getUser");
-    // Do exception user doesn't exist
-    Objects.requireNonNull(findEmail, USER_DOES_NOT_EXIST_EXCEPTION_MESSAGE);
-    // Do create variable username
-    final String username = doSignInRequest.getEmail();
-    // Do authenticate user
-    final Authentication doAuthentication =
-        authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(username, doSignInRequest.getPassword()));
-    // Do log authenticate user
-    logsDoSignUpUseCase.info(
-        "Here I Am: Class:DoSignInUseCase, Method: doSignIn, Action: user authenticate, Message: {}",
-        doAuthentication.getAuthorities());
+    User user = globalLogicRepository.findByEmail(doSignInRequest.getEmail());
     // Do create token user
-    final String token = jwtTokenProvider.createToken(username, findEmail.getRoles());
-    // Do log create token user
-    logsDoSignUpUseCase.info(
-        "Here I Am: Class:DoSignInUseCase, Method: doSignIn, Action: create token user");
-    // Do create dateNow
-    final String dateNow = dateNow();
-    // Do update lastLogin data to user
-    final int updateUser = globalLogicRepository.updateUser(username, token, dateNow, dateNow);
-    // Do log update user
-    logsDoSignUpUseCase.info(
-        "Here I Am: Class:DoSignInUseCase, Method: doSignIn, Action: update user, Message: {}",
-        updateUser);
+    final List<String> listRoles = new ArrayList<>();
+    listRoles.add(ROL_ADMIN);
+    listRoles.add(ROL_USER);
+    //
+    final String token = jwtTokenProvider.createToken(doSignInRequest.getEmail(), listRoles);
+    //
+    if (user == null) {
+      // Do Register User
+      user =
+          globalLogicRepository.save(
+              new User(
+                  doSignInRequest.getName(),
+                  doSignInRequest.getEmail(),
+                  encryptDoSignInRequest.getPassword(),
+                  doSignInRequest.getPhones(),
+                  dateNow(),
+                  dateNow(),
+                  dateNow(),
+                  token,
+                  listRoles,
+                  true));
+    }
+    //
+    if (user.getToken() != null) {
+      // Do Log Action
+      logsDoSignUpUseCase.info(
+          "Here I Am: Class:DoSignInUseCase, Method: doSignIn, Action: Create User, Message: {}",
+          user);
+      // Do authenticate user
+      final Authentication doAuthentication =
+          authenticationManager.authenticate(
+              new UsernamePasswordAuthenticationToken(
+                  user.getEmail(), doSignInRequest.getPassword()));
+      // Do log authenticate user
+      logsDoSignUpUseCase.info(
+          "Here I Am: Class:DoSignInUseCase, Method: doSignIn, Action: user authenticate, Message: {}",
+          doAuthentication.getAuthorities());
+      // Do log create token user
+      logsDoSignUpUseCase.info(
+          "Here I Am: Class:DoSignInUseCase, Method: doSignIn, Action: create token user");
+      // Do create dateNow
+      final String dateNow = dateNow();
+      // Do update lastLogin data to user
+      final int updateUser =
+          globalLogicRepository.updateUser(user.getEmail(), token, dateNow, dateNow);
+      // Do log update user
+      logsDoSignUpUseCase.info(
+          "Here I Am: Class:DoSignInUseCase, Method: doSignIn, Action: update user, Message: {}",
+          updateUser);
+    }
     // Do create response sign in user
-    final DoSignInResponse doSignInResponse = new DoSignInResponse(token, dateNow);
+    final DoSignInResponse doSignInResponse =
+        new DoSignInResponse(
+            user.getId(),
+            user.getCreated(),
+            user.getModified(),
+            user.getLastLogin(),
+            user.getToken(),
+            user.isActive());
     // Do log response sign in user
     logsDoSignUpUseCase.info(
         "Here I Am: Class:DoSignInUseCase, Method: doSignIn, Action: create response, Message: {}",

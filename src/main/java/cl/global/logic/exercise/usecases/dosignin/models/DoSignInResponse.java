@@ -9,15 +9,41 @@ import java.util.Objects;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class DoSignInResponse implements Serializable {
 
-  private static final long serialVersionUID = -4258338544898137945L;
-  private String token;
+  private static final long serialVersionUID = 1511010326660703374L;
+  private Long id;
+  private String created;
+  private String modified;
   private String lastLogin;
+  private String token;
+  private boolean active;
 
   public DoSignInResponse() {}
 
-  public DoSignInResponse(final String token, final String lastLogin) {
-    this.token = token;
+  public DoSignInResponse(
+      final Long id,
+      final String created,
+      final String modified,
+      final String lastLogin,
+      final String token,
+      final boolean active) {
+    this.id = id;
+    this.created = created;
+    this.modified = modified;
     this.lastLogin = lastLogin;
+    this.token = token;
+    this.active = active;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getCreated() {
+    return created;
+  }
+
+  public String getModified() {
+    return modified;
   }
 
   public String getLastLogin() {
@@ -28,29 +54,48 @@ public class DoSignInResponse implements Serializable {
     return token;
   }
 
+  public boolean isActive() {
+    return active;
+  }
+
   @Override
   public boolean equals(final Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     final DoSignInResponse that = (DoSignInResponse) o;
-    return Objects.equals(getToken(), that.getToken())
-        && Objects.equals(getLastLogin(), that.getLastLogin());
+    return isActive() == that.isActive()
+        && Objects.equals(getId(), that.getId())
+        && Objects.equals(getCreated(), that.getCreated())
+        && Objects.equals(getModified(), that.getModified())
+        && Objects.equals(getLastLogin(), that.getLastLogin())
+        && Objects.equals(getToken(), that.getToken());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getLastLogin(), getLastLogin());
+    return Objects.hash(
+        getId(), getCreated(), getModified(), getLastLogin(), getToken(), isActive());
   }
 
   @Override
   public String toString() {
     return "DoSignInResponse{"
-        + "token='"
-        + getToken()
+        + "id="
+        + getId()
+        + ", created='"
+        + getCreated()
+        + '\''
+        + ", modified='"
+        + getModified()
         + '\''
         + ", lastLogin='"
+        + getLastLogin()
+        + '\''
+        + ", token='"
         + getToken()
         + '\''
+        + ", active="
+        + isActive()
         + '}';
   }
 }

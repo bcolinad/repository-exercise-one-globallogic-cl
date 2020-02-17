@@ -5,7 +5,6 @@ import cl.global.logic.exercise.GlobalLogicServiceFacade;
 import cl.global.logic.exercise.data.GlobalLogicRepository;
 import cl.global.logic.exercise.data.dtos.User;
 import cl.global.logic.exercise.usecases.dosignin.DoSignInUseCase;
-import cl.global.logic.exercise.usecases.dosignup.DoSignUpUseCase;
 import cl.global.logic.exercise.usecases.finduserbyemail.FindUserByEmailUseCase;
 import cl.global.logic.exercise.usecases.getusers.GetUsersUseCase;
 import cl.global.logic.exercise.usecases.getusers.models.GetUsersResponse;
@@ -30,7 +29,6 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class GetUsersTest {
 
-  @Mock private DoSignUpUseCase doSignUpUseCase;
   @Mock private DoSignInUseCase doSignInUseCase;
   @Mock private FindUserByEmailUseCase findUserByEmailUseCase;
   @Mock private GlobalLogicRepository globalLogicRepository;
@@ -48,8 +46,7 @@ public class GetUsersTest {
     final GetUsersUseCase getUsersUseCase = new GetUsersUseCase(globalLogicRepository);
 
     final GlobalLogicServiceFacade globalLogicServiceFacade =
-        new GlobalLogicServiceFacade(
-            doSignUpUseCase, doSignInUseCase, getUsersUseCase, findUserByEmailUseCase);
+        new GlobalLogicServiceFacade(doSignInUseCase, getUsersUseCase, findUserByEmailUseCase);
 
     globalLogicProtectedController = new GlobalLogicProtectedController(globalLogicServiceFacade);
 

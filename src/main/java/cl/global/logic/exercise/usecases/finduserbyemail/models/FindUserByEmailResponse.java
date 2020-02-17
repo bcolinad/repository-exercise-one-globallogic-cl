@@ -79,7 +79,7 @@ public class FindUserByEmailResponse implements Serializable {
 
   @Override
   public String toString() {
-    return "FindUserByEmailResponse{"
+    return "DoSignInResponse{"
         + "id="
         + getId()
         + ", created='"

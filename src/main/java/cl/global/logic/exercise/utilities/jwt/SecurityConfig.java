@@ -20,7 +20,6 @@ import static cl.global.logic.exercise.utilities.AppConstant.API_REST_PROTECTED_
 import static cl.global.logic.exercise.utilities.AppConstant.API_REST_PROTECTED_FIND_USER_BY_EMAIL;
 import static cl.global.logic.exercise.utilities.AppConstant.API_REST_PROTECTED_GETUSERS;
 import static cl.global.logic.exercise.utilities.AppConstant.API_REST_UNPROTECTED_DOSIGNIN;
-import static cl.global.logic.exercise.utilities.AppConstant.API_REST_UNPROTECTED_DOSIGNUP;
 import static cl.global.logic.exercise.utilities.AppConstant.HAS_ROL_ADMIN;
 import static cl.global.logic.exercise.utilities.AppConstant.HAS_ROL_USER;
 
@@ -47,8 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .authorizeRequests()
         .antMatchers(API_REST_UNPROTECTED_DOSIGNIN)
-        .permitAll()
-        .antMatchers(API_REST_UNPROTECTED_DOSIGNUP)
         .permitAll()
         .antMatchers(API_REST_PROTECTED_GETUSERS)
         .hasAnyRole(HAS_ROL_USER, HAS_ROL_ADMIN)

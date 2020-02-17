@@ -6,43 +6,6 @@
 	},
 	"item": [
 		{
-			"name": "DoSignUp",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "{{application_json}}",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"FirstNameExample LastNameExample\",\r\n  \"email\": \"email@example.com\",\r\n  \"password\": \"Passwordexampler12\",\r\n  \"phones\": [\r\n    {\r\n      \"number\": \"946644558\",\r\n      \"city_code\": \"1\",\r\n      \"country_code\": \"57\"\r\n    }\r\n  ]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/v1/unprotected/doSignUp",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"v1",
-						"unprotected",
-						"doSignUp"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "DoSignIn",
 			"event": [
 				{
@@ -64,13 +27,18 @@
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"type": "text",
-						"value": "{{application_json}}"
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Token",
+						"value": "{{jwt_token}}",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"email@example.com\",\r\n  \"password\": \"Passwordexampler12\"\r\n}",
+					"raw": "{\n    \"name\": \"FirstNameExample LastNameExample\",\n    \"email\": \"email@example.com\",\n    \"password\": \"Pass12\",\n    \"phones\": [\n        {\n            \"number\": \"946644558\",\n            \"city_code\": \"1\",\n            \"country_code\": \"57\"\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -102,7 +70,7 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "{{application_json}}"
+						"value": "application/json"
 					},
 					{
 						"key": "Token",
@@ -135,7 +103,7 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "{{application_json}}"
+						"value": "application/json"
 					},
 					{
 						"key": "Token",
@@ -170,8 +138,8 @@
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"type": "text",
-						"value": "{{application_json}}"
+						"value": "application/json",
+						"type": "text"
 					},
 					{
 						"key": "Token",

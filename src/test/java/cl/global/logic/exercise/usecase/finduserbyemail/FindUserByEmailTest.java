@@ -5,7 +5,6 @@ import cl.global.logic.exercise.GlobalLogicServiceFacade;
 import cl.global.logic.exercise.data.GlobalLogicRepository;
 import cl.global.logic.exercise.data.dtos.User;
 import cl.global.logic.exercise.usecases.dosignin.DoSignInUseCase;
-import cl.global.logic.exercise.usecases.dosignup.DoSignUpUseCase;
 import cl.global.logic.exercise.usecases.finduserbyemail.FindUserByEmailUseCase;
 import cl.global.logic.exercise.usecases.finduserbyemail.models.FindUserByEmailResponse;
 import cl.global.logic.exercise.usecases.getusers.GetUsersUseCase;
@@ -21,10 +20,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.IOException;
 
 import static cl.global.logic.exercise.usecase.UserStubs.getUser;
-import static cl.global.logic.exercise.usecase.dosignup.DoSignUpStubs.getDoSignUpRequest;
 import static cl.global.logic.exercise.usecase.finduserbyemail.FindUserByEmailStubs.getFindUserByEmailRequest;
 import static cl.global.logic.exercise.usecase.finduserbyemail.FindUserByEmailStubs.getFindUserByEmailResponse;
-import static cl.global.logic.exercise.usecase.getusers.GetUsersStubs.getGetUsersResponse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,7 +30,6 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class FindUserByEmailTest {
 
-  @Mock private DoSignUpUseCase doSignUpUseCase;
   @Mock private DoSignInUseCase doSignInUseCase;
   @Mock private GetUsersUseCase getUsersUseCase;
   @Mock private GlobalLogicRepository globalLogicRepository;
@@ -52,8 +48,7 @@ public class FindUserByEmailTest {
         new FindUserByEmailUseCase(globalLogicRepository);
 
     final GlobalLogicServiceFacade globalLogicServiceFacade =
-        new GlobalLogicServiceFacade(
-            doSignUpUseCase, doSignInUseCase, getUsersUseCase, findUserByEmailUseCase);
+        new GlobalLogicServiceFacade(doSignInUseCase, getUsersUseCase, findUserByEmailUseCase);
 
     globalLogicProtectedController = new GlobalLogicProtectedController(globalLogicServiceFacade);
 

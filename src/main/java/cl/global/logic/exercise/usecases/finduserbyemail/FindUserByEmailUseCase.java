@@ -2,9 +2,6 @@ package cl.global.logic.exercise.usecases.finduserbyemail;
 
 import cl.global.logic.exercise.data.GlobalLogicRepository;
 import cl.global.logic.exercise.data.dtos.User;
-import cl.global.logic.exercise.usecases.dosignin.models.DoSignInRequest;
-import cl.global.logic.exercise.usecases.dosignin.models.DoSignInResponse;
-import cl.global.logic.exercise.usecases.dosignup.DoSignUpUseCase;
 import cl.global.logic.exercise.usecases.finduserbyemail.models.FindUserByEmailRequest;
 import cl.global.logic.exercise.usecases.finduserbyemail.models.FindUserByEmailResponse;
 import org.apache.logging.log4j.LogManager;
@@ -25,7 +22,7 @@ public class FindUserByEmailUseCase {
   @Autowired
   public FindUserByEmailUseCase(final GlobalLogicRepository globalLogicRepository) {
     this.globalLogicRepository = globalLogicRepository;
-    this.logsFindUserByEmailUseCase = LogManager.getLogger(DoSignUpUseCase.class);
+    this.logsFindUserByEmailUseCase = LogManager.getLogger(FindUserByEmailUseCase.class);
   }
 
   public FindUserByEmailResponse findUserByEmail(

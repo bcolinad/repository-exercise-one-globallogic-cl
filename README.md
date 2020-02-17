@@ -78,7 +78,7 @@ Mayuscula, letras minúsculas, y dos números)
   - Bcrypt for password and token.
   - JWT.
   - Handler Exception with Controller Advice.
-  - 5 Api Rest to formalice requirement with standards.
+  - 4 Api Rest to formalice requirement with standards.
   - Rename field contrycode to country_code , for typing error.
   - Rename field citycode to city_code , for typing error.
   - Collection, Enviroment for Postman with all api rest and persistent token in directory repository-exercise-one-globallogic-cl\src\main\resources\postman.
@@ -107,8 +107,7 @@ Considerate use this versión.
 
 | Api Rest | Method | Protected | Validations | Request | Response |
 | ------ | ------ | ------ | ------ | ------ | ------ |
-| /v1/unprotected/doSignIn | POST| false | format email,format password,check user exist email, email and password coincidence|{"email": "email@example.com","password":"Passwordexampler12"} | {"token": "eyJhbGciOiJIUzI1NiJ9","last_login": "16-02-2020 22:35:07"}
-| /v1/unprotected/doSignUp | POST | false | format email,format password,check user exist email, email and password coincidence  | {"name": "FirstNameExample LastNameExample","email": "email@example.com",password": "Passwordexampler12","phones": [{"number": "946644558","city_code": "1","country_code": "57"}]}| {"created": "16-02-2020 22:34:26","active": true}
+| /v1/unprotected/doSignIn | POST| false | format email,format password,check user exist email, email and password coincidence|{"name":"FirstNameExample LastNameExample","email":"email@example.com","password":"Passwordexampler12","phones":[{"number":"946644558","city_code":"1","country_code":"57"}]} | {"id":1,"created":"16-02-2020 22:34:26","modified":"16-02-2020 22:35:07","last_login":"16-02-2020 22:35:07","token":"eyJhbGciOiJIUzI1NiJ9","active":true}
 | /v1/protected/doSignOut | POST | false |  token experiration in seconds and token destroy logout | none |{"message":"Success logout, have a great day."}
 | /v1/protected/getUsers | GET | true |  token experiration in seconds, token destroy logout, user roles| none | {"id":1,"name":"FirstNameExample LastNameExample","email":"email@example.com","password":"$2a$16$gSv/X20v2iC39eVKrkVfSeM3Ky4PFY3Ww/pOMd7nlYsS8/OnUVsJ6","phones":[{"number":"946644558","city_code":"1","country_code":"57"}],"created":"16-02-2020 22:34:26","modified":"16-02-2020 22:35:07","last_login":"16-02-2020 22:35:07","token":"eyJhbGciOiJIUzI1NiJ9","roles":["ROLE_ADMIN","ROLE_USER"],"active":true}
 | /v1/protected/findUserByEmail |GET | true | token experiration in seconds, token destroy logout, user roles , format email, check email exist |{"email":"email@example.com"} | {"id":1,"created":"16-02-2020 22:34:26","modified":"16-02-2020 22:35:07","last_login":"16-02-2020 22:35:07","token":"eyJhbGciOiJIUzI1NiJ9","active":true}

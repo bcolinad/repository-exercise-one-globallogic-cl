@@ -1,6 +1,6 @@
 package cl.global.logic.exercise.data.dtos;
 
-import cl.global.logic.exercise.usecases.dosignup.models.Phone;
+import cl.global.logic.exercise.usecases.dosignin.models.Phone;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -70,15 +70,18 @@ public class User {
       final String email,
       final String password,
       final List<Phone> phones,
-      final String created) {
+      final String created,
+      final String modified,
+      final String lastLogin,
+      final String token) {
     this.name = name;
     this.email = email;
     this.password = password;
     this.phones = phones;
     this.created = created;
-    this.modified = "";
-    this.lastLogin = "";
-    this.token = "";
+    this.modified = modified;
+    this.lastLogin = lastLogin;
+    this.token = token;
     this.active = true;
     this.roles = Arrays.asList(ROL_ADMIN, ROL_USER);
   }
@@ -111,6 +114,29 @@ public class User {
       final List<String> roles,
       final boolean active) {
     this.id = id;
+    this.name = name;
+    this.email = email;
+    this.password = password;
+    this.phones = phones;
+    this.created = created;
+    this.modified = modified;
+    this.lastLogin = lastLogin;
+    this.token = token;
+    this.roles = roles;
+    this.active = active;
+  }
+
+  public User(
+      final String name,
+      final String email,
+      final String password,
+      final List<Phone> phones,
+      final String created,
+      final String modified,
+      final String lastLogin,
+      final String token,
+      final List<String> roles,
+      final boolean active) {
     this.name = name;
     this.email = email;
     this.password = password;
